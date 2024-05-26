@@ -3,8 +3,12 @@ import { Repository } from "typeorm";
 import { User } from "./user.entity";
 import { RegisterUserDto } from "./dto/register-user.dto";
 
-export class UsersRepository extends Repository<User> {
-    // this function is unreachable, why???
+export interface UserRepository extends Repository<User> {
+    this: Repository<User>;
+    register(registerUserDto: RegisterUserDto): Promise<User>;
+}
+
+export const usersRepository: Pick<UserRepository, any> = {
     async register(registerUserDto: RegisterUserDto): Promise<User>
     {
         const {name, email, password} = registerUserDto;
@@ -15,4 +19,4 @@ export class UsersRepository extends Repository<User> {
 
         return user;
     }
-}
+};
