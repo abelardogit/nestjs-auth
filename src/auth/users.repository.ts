@@ -9,14 +9,10 @@ export interface UserRepository extends Repository<User> {
 }
 
 export const usersRepository: Pick<UserRepository, any> = {
-    async register(registerUserDto: RegisterUserDto): Promise<User>
+    async register(this: Repository<User>, registerUserDto: RegisterUserDto): Promise<User>
     {
         const {name, email, password} = registerUserDto;
 
-        const user = this.create({name, email, password});
-        
-        await this.insert(user);
-
-        return user;
+        return this.save({name, email, password});
     }
 };
